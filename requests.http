@@ -1,0 +1,74 @@
+### Crear usuario
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Julián",
+  "email": "julian@example.com",
+  "password": "12345",
+  "preferenciasDieta": "Vegetariana"
+}
+
+### Listar usuarios
+GET http://localhost:8080/api/usuarios
+
+### Crear ingrediente global
+POST http://localhost:8080/api/ingredientes
+Content-Type: application/json
+
+{
+  "nombre": "Leche",
+  "categoria": "Lácteos",
+  "unidadBase": "MILILITRO",
+  "caloriasPorUnidad": 0.64
+}
+
+### Crear receta
+POST http://localhost:8080/api/recetas
+Content-Type: application/json
+
+{
+  "titulo": "Pasta al pesto",
+  "descripcion": "Receta rápida",
+  "pasos": "Cocer pasta; mezclar con pesto; servir",
+  "tiempoPreparacion": 15,
+  "dificultad": "FACIL",
+  "categoria": "Comida rápida"
+}
+
+### Asociar ingrediente a receta (idReceta=1, idIngrediente=1)
+POST http://localhost:8080/api/recetas-ingredientes
+Content-Type: application/json
+
+{
+  "receta": { "idReceta": 1 },
+  "ingrediente": { "idIngrediente": 1 },
+  "cantidad": 200,
+  "unidad": "GRAMO",
+  "observacion": "picado"
+}
+
+### Añadir al inventario de usuario (idUsuario=1, idIngrediente=1)
+POST http://localhost:8080/api/inventario
+Content-Type: application/json
+
+{
+  "usuario": { "idUsuario": 1 },
+  "ingrediente": { "idIngrediente": 1 },
+  "cantidad": 1,
+  "unidad": "LITRO"
+}
+
+### Crear lista de compra
+POST http://localhost:8080/api/listas-compra
+Content-Type: application/json
+
+{
+  "usuario": { "idUsuario": 1 },
+  "nombreLista": "Compra semanal",
+  "descripcion": "Ingredientes de la semana",
+  "activa": true
+}
+
+### Listar listas del usuario 1
+GET http://localhost:8080/api/listas-compra/usuario/1

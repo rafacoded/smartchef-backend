@@ -1,0 +1,86 @@
+# ==============================================
+# 🧠 SmartChef - Git Ignore (Spring Boot + Maven + IntelliJ)
+# ==============================================
+
+# --- Maven ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- Compilación y binarios ---
+out/
+build/
+
+# --- Archivos temporales / logs ---
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# --- Configuración del sistema operativo ---
+.DS_Store
+Thumbs.db
+
+# --- Archivos del entorno IntelliJ IDEA / JetBrains ---
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# --- Spring Boot ---
+# Excluir propiedades locales sensibles (usuario BD, password, etc.)
+application.properties
+application.yml
+
+# --- NetBeans ---
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# --- Visual Studio Code ---
+.vscode/
+
+# --- Archivos de compilación de pruebas ---
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# --- Archivos del sistema ---
+*.class
+*.jar
+*.war
+*.ear
+
+# --- Logs y dumps ---
+logs/
+*.pid
+*.seed
+hs_err_pid*
+replay_pid*
+
+# --- Dependencias externas (por si añades frontend Angular/Ionic) ---
+node_modules/
+dist/
+www/
+.env
+.angular/
+package-lock.json
+yarn.lock
+
+# --- Archivos auxiliares del IDE ---
+*.orig
+*.rej
+
+# --- Documentación temporal ---
+HELP.md
+README~*

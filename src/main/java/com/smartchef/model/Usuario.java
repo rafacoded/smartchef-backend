@@ -1,0 +1,37 @@
+package com.smartchef.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "usuario")
+@Data                       // incluye getter, setter, equals, hashCode, toString
+@NoArgsConstructor           // constructor vacío
+@AllArgsConstructor          // constructor con todos los campos
+@Builder                     // permite crear objetos con builder
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idUsuario;
+
+    @Column(nullable = false, length = 100)
+    private String nombre;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(name = "fecha_registro")
+    private LocalDate fechaRegistro = LocalDate.now();
+
+    @Column(name = "preferencias_dieta")
+    private String preferenciasDieta;
+
+    @Column(name = "foto_perfil")
+    private String fotoPerfil;
+}
