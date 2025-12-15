@@ -36,7 +36,7 @@ public class ListaCompra {
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_receta", nullable = true)
+    @JoinColumn(name = "id_receta")
     private Receta origenReceta;
 
     // Listeners Jpa (actualizaciones)

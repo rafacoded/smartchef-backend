@@ -1,49 +1,15 @@
 package com.smartchef.mapper;
 
 import com.smartchef.dto.RecetaIngredienteDTO;
-import com.smartchef.model.*;
-import org.springframework.stereotype.Component;
+import com.smartchef.model.RecetaIngrediente;
+import org.mapstruct.Mapper;
 
-@Component
-public class RecetaIngredienteMapper {
+@Mapper(componentModel="spring")
+public interface RecetaIngredienteMapper {
 
-    public RecetaIngredienteDTO toDTO(RecetaIngrediente ri) {
-        if (ri == null) return null;
+    RecetaIngrediente toEntity(RecetaIngredienteDTO recetaIngredienteDTO);
 
-        return new RecetaIngredienteDTO(
-                ri.getIdRecetaIngrediente(),
-                ri.getReceta() != null ? ri.getReceta().getIdReceta() : null,
-                ri.getReceta() != null ? ri.getReceta().getTitulo() : null,
-                ri.getIngrediente() != null ? ri.getIngrediente().getIdIngrediente() : null,
-                ri.getIngrediente() != null ? ri.getIngrediente().getNombre() : null,
-                ri.getCantidad(),
-                ri.getUnidad() != null ? ri.getUnidad().name() : null
-        );
-    }
+    RecetaIngredienteDTO toDTO(RecetaIngrediente recetaIngrediente);
 
-    public RecetaIngrediente toEntity(RecetaIngredienteDTO dto) {
-        if (dto == null) return null;
 
-        RecetaIngrediente ri = new RecetaIngrediente();
-        ri.setIdRecetaIngrediente(dto.getIdRecetaIngrediente());
-        ri.setCantidad(dto.getCantidad());
-
-        if (dto.getUnidad() != null) {
-            ri.setUnidad(UnidadMedida.valueOf(dto.getUnidad().toUpperCase()));
-        }
-
-        if (dto.getIdReceta() != null) {
-            Receta receta = new Receta();
-            receta.setIdReceta(dto.getIdReceta());
-            ri.setReceta(receta);
-        }
-
-        if (dto.getIdIngrediente() != null) {
-            IngredienteGlobal ingrediente = new IngredienteGlobal();
-            ingrediente.setIdIngrediente(dto.getIdIngrediente());
-            ri.setIngrediente(ingrediente);
-        }
-
-        return ri;
-    }
 }

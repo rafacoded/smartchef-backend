@@ -15,6 +15,13 @@ public class RecetaIngrediente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRecetaIngrediente;
 
+    @Column(nullable = false)
+    private Double cantidad;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private UnidadMedida unidad; // g, ml, unidad, etc.
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_receta", nullable = false)
     private Receta receta;
@@ -22,11 +29,4 @@ public class RecetaIngrediente {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ingrediente", nullable = false)
     private IngredienteGlobal ingrediente;
-
-    @Column(nullable = false)
-    private Double cantidad;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 30)
-    private UnidadMedida unidad; // g, ml, unidad, etc.
 }

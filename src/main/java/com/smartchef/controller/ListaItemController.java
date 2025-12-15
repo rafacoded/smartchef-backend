@@ -4,33 +4,36 @@ import com.smartchef.dto.ListaItemDTO;
 import com.smartchef.mapper.ListaItemMapper;
 import com.smartchef.model.ListaItem;
 import com.smartchef.service.ListaItemService;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/lista-items")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class ListaItemController {
 
     private final ListaItemService service;
     private final ListaItemMapper mapper;
 
-    public ListaItemController(ListaItemService service, ListaItemMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
+    @PostMapping
+    public ListaItemDTO crearListaItem(@Valid @RequestBody ListaItemDTO dto) {
+        ListaItem item = mapper.toEntity(dto);
+
+        return mapper.toDTO(item);
     }
 
     @GetMapping("/lista/{idLista}")
-    public List<ListaItemDTO> listarPorLista(@PathVariable Long idLista) {
-        return service.listarPorLista(idLista).stream().map(mapper::toDTO).collect(Collectors.toList());
+    public List<ListaItemDTO> listarPorListaCompra(@PathVariable Long idLista) {
+        return service.listarPorListaCompra(idLista);
     }
 
-    @PostMapping
-    public ListaItemDTO guardar(@RequestBody ListaItemDTO dto) {
-        ListaItem item = mapper.toEntity(dto);
-        return mapper.toDTO(service.guardar(item));
+    @PutMapping("/{id}")
+    public ListaItemDTO actualizarItem(@PathVariable Long id, @Valid @RequestBody ListaItemDTO dto) {
+        return service.actualizarItem(id, dto);
     }
 
     @DeleteMapping("/{idItem}")

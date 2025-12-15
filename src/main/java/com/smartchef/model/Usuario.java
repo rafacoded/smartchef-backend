@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
 @Data                       // incluye getter, setter, equals, hashCode, toString
 @NoArgsConstructor           // constructor vacío
 @AllArgsConstructor          // constructor con todos los campos
-@Builder                     // permite crear objetos con builder
 public class Usuario {
 
     @Id
@@ -29,8 +29,10 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro = LocalDate.now();
 
-    @Column(name = "preferencias_dieta")
-    private String preferenciasDieta;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "preferencias_alimentarias")
+    private List<PreferenciaAlimentaria> preferenciasAlimentarias;
 
     @Column(name = "foto_perfil")
     private String fotoPerfil;

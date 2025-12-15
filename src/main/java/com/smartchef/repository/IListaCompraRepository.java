@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ListaCompraRepository extends JpaRepository<ListaCompra, Long> {
+public interface IListaCompraRepository extends JpaRepository<ListaCompra, Long> {
 
     // Listar las listas de compra (valga la redundancia)
     List<ListaCompra> findByUsuarioIdUsuario(Long idUsuario);

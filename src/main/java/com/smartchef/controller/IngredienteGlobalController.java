@@ -1,8 +1,12 @@
 package com.smartchef.controller;
 
+import com.smartchef.dto.IngredienteGlobalDTO;
+import com.smartchef.mapper.IngredienteGlobalMapper;
 import com.smartchef.model.IngredienteGlobal;
 import com.smartchef.service.IngredienteGlobalService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,29 +14,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ingredientes")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class IngredienteGlobalController {
 
-    @Autowired
     private IngredienteGlobalService ingredienteService;
 
-    @GetMapping
-    public List<IngredienteGlobal> listarIngredientes() {
-        return ingredienteService.listarTodos();
-    }
+    private IngredienteGlobalMapper ingredienteMapper;
 
     @PostMapping
-    public IngredienteGlobal crearIngrediente(@RequestBody IngredienteGlobal ingrediente) {
-        return ingredienteService.guardar(ingrediente);
+    public IngredienteGlobalDTO crearIngrediente(@Valid @RequestBody IngredienteGlobalDTO dto) {
+        IngredienteGlobal ing = ingredienteMapper.toEntity(dto);
+        IngredienteGlobal guardado = ingredienteService.crearIngredienteGlobal(ing);
+        return ingredienteMapper.toDTO(guardado);
+    }
+
+    @GetMapping
+    public List<IngredienteGlobalDTO> listarIngredientes() {
+        return ingredienteService.listarTodos()
+                .stream()
+                .map(ingredienteMapper::toDTO)
+                .toList();
     }
 
     @GetMapping("/categoria/{categoria}")
-    public List<IngredienteGlobal> buscarPorCategoria(@PathVariable String categoria) {
-        return ingredienteService.buscarPorCategoria(categoria);
+    public List<IngredienteGlobalDTO> buscarPorCategoria(@PathVariable String categoria) {
+        return ingredienteService.buscarPorCategoria(categoria)
+                .stream()
+                .map(ingredienteMapper::toDTO)
+                .toList();
     }
 
     @GetMapping("/nombre/{nombre}")
-    public IngredienteGlobal buscarPorNombre(@PathVariable String nombre) {
-        return ingredienteService.buscarPorNombre(nombre);
+    public IngredienteGlobalDTO buscarPorNombre(@PathVariable String nombre) {
+        IngredienteGlobal ing = ingredienteService.buscarPorNombre(nombre);
+        return ingredienteMapper.toDTO(ing);
     }
 
     @DeleteMapping("/{id}")

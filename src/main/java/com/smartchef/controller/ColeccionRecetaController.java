@@ -1,10 +1,13 @@
 package com.smartchef.controller;
 
+import jakarta.validation.Valid;
+
 import com.smartchef.dto.ColeccionRecetaDTO;
 import com.smartchef.mapper.ColeccionRecetaMapper;
 import com.smartchef.model.ColeccionReceta;
 import com.smartchef.service.ColeccionRecetaService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,18 +16,19 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/colecciones")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class ColeccionRecetaController {
 
     private final ColeccionRecetaService coleccionService;
     private final ColeccionRecetaMapper coleccionMapper;
 
-    @Autowired
-    public ColeccionRecetaController(ColeccionRecetaService coleccionService, ColeccionRecetaMapper coleccionMapper) {
-        this.coleccionService = coleccionService;
-        this.coleccionMapper = coleccionMapper;
+    @PostMapping
+    public ColeccionRecetaDTO crearColeccionReceta(@Valid @RequestBody ColeccionRecetaDTO dto) {
+        ColeccionReceta coleccion = coleccionMapper.toEntity(dto);
+        ColeccionReceta guardada = coleccionService.crearColeccionReceta(coleccion);
+        return coleccionMapper.toDTO(guardada);
     }
 
-    // 📋 Listar colecciones de un usuario
     @GetMapping("/usuario/{idUsuario}")
     public List<ColeccionRecetaDTO> listarPorUsuario(@PathVariable Long idUsuario) {
         return coleccionService.listarPorUsuario(idUsuario)
@@ -33,7 +37,6 @@ public class ColeccionRecetaController {
                 .collect(Collectors.toList());
     }
 
-    // 🔍 Obtener una colección por ID
     @GetMapping("/{idColeccion}")
     public ColeccionRecetaDTO obtenerPorId(@PathVariable Long idColeccion) {
         return coleccionService.obtenerPorId(idColeccion)
@@ -41,15 +44,6 @@ public class ColeccionRecetaController {
                 .orElse(null);
     }
 
-    // ➕ Crear o actualizar colección
-    @PostMapping
-    public ColeccionRecetaDTO guardar(@RequestBody ColeccionRecetaDTO dto) {
-        ColeccionReceta coleccion = coleccionMapper.toEntity(dto);
-        ColeccionReceta guardada = coleccionService.guardar(coleccion);
-        return coleccionMapper.toDTO(guardada);
-    }
-
-    // ❌ Eliminar colección
     @DeleteMapping("/{idColeccion}")
     public void eliminar(@PathVariable Long idColeccion) {
         coleccionService.eliminar(idColeccion);

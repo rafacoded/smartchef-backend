@@ -3,6 +3,8 @@ package com.smartchef.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "receta")
@@ -22,9 +24,6 @@ public class Receta {
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(columnDefinition = "TEXT")
-    private String pasos;
-
     @Column(name = "tiempo_preparacion")
     private Integer tiempoPreparacion; // minutos
 
@@ -41,8 +40,16 @@ public class Receta {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    // 🔗 Relación con usuario (autor)
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario autor;
+    @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PasoReceta> pasos = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "preferencia")
+    private List<PreferenciaAlimentaria> preferencias = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecetaIngrediente> ingredientes = new ArrayList<>();
+
+
 }

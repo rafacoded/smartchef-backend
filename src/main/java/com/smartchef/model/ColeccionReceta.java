@@ -3,7 +3,9 @@ package com.smartchef.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,25 +20,20 @@ public class ColeccionReceta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idColeccion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
-
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(length = 255)
+    @Column()
     private String descripcion;
 
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    // 🔗 Relación N:M con recetas a través de tabla intermedia
-    @ManyToMany
-    @JoinTable(
-            name = "coleccion_receta_detalle",
-            joinColumns = @JoinColumn(name = "id_coleccion"),
-            inverseJoinColumns = @JoinColumn(name = "id_receta")
-    )
-    private Set<Receta> recetas = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "coleccion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<GuardadoReceta> guardados = new HashSet<>();
+
 }

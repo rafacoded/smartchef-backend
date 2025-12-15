@@ -1,8 +1,9 @@
 package com.smartchef.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -10,16 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListaCompraDTO {
-    private Long idLista;
+    @NotBlank
     private String nombreLista;
     private String descripcion;
-    private Boolean activa;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaActualizacion;
-
-    private Long idUsuario;
-    private String nombreUsuario;  // opcional para mostrar quién la creó
-
-    private Long idRecetaOrigen;   // si deriva de una receta
-    private String tituloRecetaOrigen;
 }
+

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IngredienteGlobalRepository extends JpaRepository<IngredienteGlobal, Long> {
+public interface IIngredienteGlobalRepository extends JpaRepository<IngredienteGlobal, Long> {
     List<IngredienteGlobal> findByCategoria(String categoria);
     IngredienteGlobal findByNombre(String nombre);
 }

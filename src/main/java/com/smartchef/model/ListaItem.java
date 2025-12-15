@@ -15,14 +15,6 @@ public class ListaItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idItem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_lista", nullable = false)
-    private ListaCompra listaCompra;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ingrediente", nullable = false)
-    private IngredienteGlobal ingrediente;
-
     @Column(nullable = false)
     private Double cantidad;
 
@@ -31,5 +23,13 @@ public class ListaItem {
     private UnidadMedida unidad;
 
     @Column(nullable = false)
-    private boolean comprado = false;
+    private Boolean comprado = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_lista", nullable = false)
+    private ListaCompra listaCompra;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_ingrediente", nullable = false)
+    private IngredienteGlobal ingrediente;
 }

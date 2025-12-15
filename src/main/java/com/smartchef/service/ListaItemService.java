@@ -1,27 +1,48 @@
 package com.smartchef.service;
 
+import com.smartchef.dto.ListaItemDTO;
+import com.smartchef.mapper.ListaItemMapper;
 import com.smartchef.model.ListaItem;
-import com.smartchef.repository.ListaItemRepository;
+import com.smartchef.repository.IListaItemRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ListaItemService {
 
-    private final ListaItemRepository listaItemRepository;
+    private final IListaItemRepository listaItemRepository;
+    private final ListaItemMapper listaItemMapper;
 
-    public ListaItemService(ListaItemRepository listaItemRepository) {
-        this.listaItemRepository = listaItemRepository;
+    public ListaItemDTO crearListaItem(ListaItemDTO item) {
+        ListaItem LItem = listaItemMapper.toEntity(item);
+        ListaItem guardado =  listaItemRepository.save(LItem);
+        return listaItemMapper.toDTO(guardado);
     }
 
-    public List<ListaItem> listarPorLista(Long idLista) {
-        return listaItemRepository.findByListaCompraIdLista(idLista);
+    public List<ListaItem> guardarItems(List<ListaItem> items) {
+        return listaItemRepository.saveAll(items);
     }
 
-    public ListaItem guardar(ListaItem item) {
-        return listaItemRepository.save(item);
+    public List<ListaItemDTO> listarPorListaCompra(Long idLista) {
+        return listaItemRepository.findByListaCompraIdLista(idLista)
+                .stream()
+                .map(listaItemMapper::toDTO)
+                .toList();
     }
+
+    public ListaItemDTO actualizarItem(Long id, ListaItemDTO dto) {
+        ListaItem existente = listaItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item no encontrado"));
+
+        listaItemMapper.updateEntityFromDTO(dto, existente);
+
+        ListaItem actualizado = listaItemRepository.save(existente);
+        return listaItemMapper.toDTO(actualizado);
+    }
+
 
     public void eliminar(Long idItem) {
         listaItemRepository.deleteById(idItem);

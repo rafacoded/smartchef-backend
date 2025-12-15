@@ -1,27 +1,18 @@
 package com.smartchef.mapper;
 
 import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.model.Usuario;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class UsuarioMapper {
+@Mapper(componentModel="spring")
+public interface UsuarioMapper {
 
-    public UsuarioDTO toDTO(Usuario usuario) {
-        if (usuario == null) return null;
-        return new UsuarioDTO(
-                usuario.getIdUsuario(),
-                usuario.getNombre(),
-                usuario.getEmail()
-        );
-    }
+    UsuarioResponseDTO toResponseDTO(Usuario u);
 
-    public Usuario toEntity(UsuarioDTO dto) {
-        if (dto == null) return null;
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario(dto.getIdUsuario());
-        usuario.setNombre(dto.getNombre());
-        usuario.setEmail(dto.getEmail());
-        return usuario;
-    }
+    Usuario toEntity(UsuarioDTO dto);
+
+    void updateFromDTO(UsuarioDTO dto, @MappingTarget Usuario entity);
+
 }

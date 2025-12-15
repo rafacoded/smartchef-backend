@@ -1,74 +1,287 @@
-### Crear usuario
-POST http://localhost:8080/api/usuarios
+### su token sumama
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjMwMzYzMDksImV4cCI6MTc2MzEyMjcwOX0.8i2BLyiHQ3tQwq28hYcg-11JV6L3bav3C9lrTpoqrNY
+
+### REGISTER ✅
+POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "nombre": "Julián",
-  "email": "julian@example.com",
-  "password": "12345",
-  "preferenciasDieta": "Vegetariana"
+  "nombre": "Prueba",
+  "email": "prueba@example.com",
+  "password": "abcd1234"
 }
 
-### Listar usuarios
-GET http://localhost:8080/api/usuarios
+### REGISTER ❌
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
 
-### Crear ingrediente global
+{
+  "nombre": "",
+  "email": "",
+  "password": ""
+}
+
+### LOGIN ✅
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": "abcd1234"
+}
+
+### LOGIN ❌
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": ""
+}
+
+### INGREDIENTE GLOBAL ✅
 POST http://localhost:8080/api/ingredientes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "nombre": "Leche",
-  "categoria": "Lácteos",
-  "unidadBase": "MILILITRO",
-  "caloriasPorUnidad": 0.64
+  "nombre": "Harina",
+  "categoria": "Cereales",
+  "unidadBase": "GRAMO"
 }
 
-### Crear receta
-POST http://localhost:8080/api/recetas
+### INGREDIENTE GLOBAL ❌
+POST http://localhost:8080/api/ingredientes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "titulo": "Pasta al pesto",
-  "descripcion": "Receta rápida",
-  "pasos": "Cocer pasta; mezclar con pesto; servir",
-  "tiempoPreparacion": 15,
-  "dificultad": "FACIL",
-  "categoria": "Comida rápida"
+  "nombre": "",
+  "categoria": ""
 }
 
-### Asociar ingrediente a receta (idReceta=1, idIngrediente=1)
-POST http://localhost:8080/api/recetas-ingredientes
-Content-Type: application/json
-
-{
-  "receta": { "idReceta": 1 },
-  "ingrediente": { "idIngrediente": 1 },
-  "cantidad": 200,
-  "unidad": "GRAMO",
-  "observacion": "picado"
-}
-
-### Añadir al inventario de usuario (idUsuario=1, idIngrediente=1)
+### INVENTARIO ✅
 POST http://localhost:8080/api/inventario
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "usuario": { "idUsuario": 1 },
-  "ingrediente": { "idIngrediente": 1 },
-  "cantidad": 1,
-  "unidad": "LITRO"
+  "idUsuario": 1,
+  "idIngrediente": 1,
+  "cantidad": 500,
+  "unidad": 50
 }
 
-### Crear lista de compra
-POST http://localhost:8080/api/listas-compra
+
+### INVENTARIO ❌
+POST http://localhost:8080/api/inventario
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "usuario": { "idUsuario": 1 },
-  "nombreLista": "Compra semanal",
-  "descripcion": "Ingredientes de la semana",
-  "activa": true
+  "idUsuario": null,
+  "idIngrediente": null,
+  "cantidad": -10
 }
 
-### Listar listas del usuario 1
-GET http://localhost:8080/api/listas-compra/usuario/1
+### RECETA ✅
+POST http://localhost:8080/api/recetas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "titulo": "Tortilla",
+  "descripcion": "Huevos + sal",
+  "pasos": "Batir huevos...",
+  "tiempoPreparacion": 10,
+  "dificultad": "FACIL",
+  "categoria": "Cena",
+  "imagen": "",
+  "idAutor": 1
+}
+
+### RECETA ❌
+POST http://localhost:8080/api/recetas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "titulo": "",
+  "descripcion": "",
+  "pasos": "",
+  "tiempoPreparacion": 0,
+  "dificultad": "",
+  "categoria": "",
+  "imagen": ""
+}
+
+### LISTA COMPRA ✅
+POST http://localhost:8080/api/listas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombreLista": "Compras semana",
+  "descripcion": "Frutas",
+  "idUsuario": 2
+}
+
+### LISTA COMPRA ❌
+POST http://localhost:8080/api/listas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombreLista": "",
+  "descripcion": "",
+  "idUsuario": 1
+}
+
+### HISTORIAL COCINA ✅
+POST http://localhost:8080/api/historial
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idUsuario": 1,
+  "idReceta": 1,
+  "fechaRealizacion": "2025-11-13T12:30:00",
+  "comentario": "Muy buena",
+  "valoracionPersonal": 5
+}
+
+### HISTORIAL COCINA ❌
+POST http://localhost:8080/api/historial
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idUsuario": 1,
+  "idReceta": 1,
+  "fechaRealizacion": "",
+  "comentario": "",
+  "valoracionPersonal": 0
+}
+
+### GUARDADO RECETA ✅
+
+POST http://localhost:8080/api/guardados
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idUsuario": 2,
+  "fechaGuardado": "2025-11-13T12:30:00",
+  "idReceta": 2
+}
+
+### GUARDADO RECETA ❌
+
+POST http://localhost:8080/api/guardados
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idUsuario": 0
+}
+
+### COLECCION RECETA ✅
+POST http://localhost:8080/api/colecciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idUsuario": 1,
+  "nombre": "Postres favoritos",
+  "descripcion": "Mis preferidos"
+}
+
+### COLECCION RECETA ❌
+POST http://localhost:8080/api/colecciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idUsuario": 2,
+  "nombre": "",
+  "descripcion": ""
+}
+
+### LISTA ITEM ✅
+
+POST http://localhost:8080/api/lista-items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idLista": 3,
+  "idIngrediente": 5,
+  "cantidad": 2.5,
+  "unidad": "UNIDAD",
+  "comprado": false
+}
+
+
+### LISTA ITEM ❌
+POST http://localhost:8080/api/lista-items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idLista": null,
+  "idIngrediente": null,
+  "cantidad": -4,
+  "unidad": "",
+  "comprado": true
+}
+
+### RECETA INGREDIENTE ✅
+POST http://localhost:8080/api/receta-ingredientes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idReceta": 2,
+  "idIngrediente": 2,
+  "cantidad": 1.5,
+  "unidad": "GRAMOS"
+}
+
+### RECETA INGREDIENTE ❌
+POST http://localhost:8080/api/receta-ingredientes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idReceta": null,
+  "idIngrediente": 0,
+  "cantidadNecesaria": 0,
+  "unidad": ""
+}
+
+
+### VALORACION RECETA ✅
+POST http://localhost:8080/api/valoraciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idReceta": 2,
+  "idUsuario": 2,
+  "puntuacion": 5,
+  "comentario": "Increíble receta, volveré a hacerla!"
+}
+
+
+### VALORACION RECETA ❌
+POST http://localhost:8080/api/valoraciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idReceta": null,
+  "idUsuario": null,
+  "valor": 8,
+  "comentario": ""
+}
+

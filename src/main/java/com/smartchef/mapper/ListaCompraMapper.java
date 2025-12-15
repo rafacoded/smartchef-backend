@@ -1,54 +1,19 @@
 package com.smartchef.mapper;
 
 import com.smartchef.dto.ListaCompraDTO;
+import com.smartchef.dto.ListaCompraResponseDTO;
 import com.smartchef.model.ListaCompra;
-import com.smartchef.model.Receta;
-import com.smartchef.model.Usuario;
-import org.springframework.stereotype.Component;
+import com.smartchef.model.ListaItem;
+import org.mapstruct.Mapper;
 
-@Component
-public class ListaCompraMapper {
+import java.util.List;
 
-    public ListaCompraDTO toDTO(ListaCompra lista) {
-        if (lista == null) return null;
+@Mapper(componentModel="spring")
+public interface ListaCompraMapper {
 
-        return new ListaCompraDTO(
-                lista.getIdLista(),
-                lista.getNombreLista(),
-                lista.getDescripcion(),
-                lista.getActiva(),
-                lista.getFechaCreacion(),
-                lista.getFechaActualizacion(),
-                lista.getUsuario() != null ? lista.getUsuario().getIdUsuario() : null,
-                lista.getUsuario() != null ? lista.getUsuario().getNombre() : null,
-                lista.getOrigenReceta() != null ? lista.getOrigenReceta().getIdReceta() : null,
-                lista.getOrigenReceta() != null ? lista.getOrigenReceta().getTitulo() : null
-        );
-    }
+    ListaCompraDTO toDTO(ListaCompra lc);
 
-    public ListaCompra toEntity(ListaCompraDTO dto) {
-        if (dto == null) return null;
+    ListaCompra toEntity(ListaCompraDTO dto);
 
-        ListaCompra lista = new ListaCompra();
-        lista.setIdLista(dto.getIdLista());
-        lista.setNombreLista(dto.getNombreLista());
-        lista.setDescripcion(dto.getDescripcion());
-        lista.setActiva(dto.getActiva());
-        lista.setFechaCreacion(dto.getFechaCreacion());
-        lista.setFechaActualizacion(dto.getFechaActualizacion());
-
-        if (dto.getIdUsuario() != null) {
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(dto.getIdUsuario());
-            lista.setUsuario(usuario);
-        }
-
-        if (dto.getIdRecetaOrigen() != null) {
-            Receta receta = new Receta();
-            receta.setIdReceta(dto.getIdRecetaOrigen());
-            lista.setOrigenReceta(receta);
-        }
-
-        return lista;
-    }
+    ListaCompraResponseDTO toResponseDTO(ListaCompra lc, List<ListaItem> items);
 }

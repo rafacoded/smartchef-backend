@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ValoracionRecetaRepository extends JpaRepository<ValoracionReceta, Long> {
+public interface IValoracionRecetaRepository extends JpaRepository<ValoracionReceta, Long> {
     List<ValoracionReceta> findByRecetaIdReceta(Long idReceta);
     List<ValoracionReceta> findByUsuarioIdUsuario(Long idUsuario);
 }

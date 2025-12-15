@@ -1,21 +1,17 @@
 package com.smartchef.service;
 
 import com.smartchef.model.ValoracionReceta;
-import com.smartchef.repository.ValoracionRecetaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.smartchef.repository.IValoracionRecetaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class ValoracionRecetaService {
 
-    private final ValoracionRecetaRepository valoracionRepository;
-
-    @Autowired
-    public ValoracionRecetaService(ValoracionRecetaRepository valoracionRepository) {
-        this.valoracionRepository = valoracionRepository;
-    }
+    private final IValoracionRecetaRepository valoracionRepository;
 
     public List<ValoracionReceta> listarPorReceta(Long idReceta) {
         return valoracionRepository.findByRecetaIdReceta(idReceta);
@@ -25,7 +21,7 @@ public class ValoracionRecetaService {
         return valoracionRepository.findByUsuarioIdUsuario(idUsuario);
     }
 
-    public ValoracionReceta guardar(ValoracionReceta valoracion) {
+    public ValoracionReceta crearValoracionReceta(ValoracionReceta valoracion) {
         return valoracionRepository.save(valoracion);
     }
 

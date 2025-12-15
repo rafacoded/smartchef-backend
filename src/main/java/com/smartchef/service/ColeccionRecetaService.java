@@ -1,22 +1,18 @@
 package com.smartchef.service;
 
 import com.smartchef.model.ColeccionReceta;
-import com.smartchef.repository.ColeccionRecetaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.smartchef.repository.IColeccionRecetaRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ColeccionRecetaService {
 
-    private final ColeccionRecetaRepository coleccionRepository;
-
-    @Autowired
-    public ColeccionRecetaService(ColeccionRecetaRepository coleccionRepository) {
-        this.coleccionRepository = coleccionRepository;
-    }
+    private final IColeccionRecetaRepository coleccionRepository;
 
     public List<ColeccionReceta> listarPorUsuario(Long idUsuario) {
         return coleccionRepository.findByUsuarioIdUsuario(idUsuario);
@@ -26,7 +22,7 @@ public class ColeccionRecetaService {
         return coleccionRepository.findById(idColeccion);
     }
 
-    public ColeccionReceta guardar(ColeccionReceta coleccion) {
+    public ColeccionReceta crearColeccionReceta(ColeccionReceta coleccion) {
         return coleccionRepository.save(coleccion);
     }
 

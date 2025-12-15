@@ -1,6 +1,8 @@
 package com.smartchef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -31,5 +33,7 @@ public class HistorialCocina {
     private String comentario; // opcional
 
     @Column
+    @Min(1)
+    @Max(5)
     private Integer valoracionPersonal; // 1–5 opcional
 }

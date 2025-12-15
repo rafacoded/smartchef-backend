@@ -1,40 +1,20 @@
 package com.smartchef.mapper;
 
 import com.smartchef.dto.GuardadoRecetaDTO;
-import com.smartchef.model.*;
-import org.springframework.stereotype.Component;
+import com.smartchef.dto.GuardadoRecetaResponseDTO;
+import com.smartchef.model.GuardadoReceta;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class GuardadoRecetaMapper {
+@Mapper(componentModel="spring")
+public interface GuardadoRecetaMapper {
 
-    public GuardadoRecetaDTO toDTO(GuardadoReceta g) {
-        return new GuardadoRecetaDTO(
-                g.getIdGuardado(),
-                g.getUsuario() != null ? g.getUsuario().getIdUsuario() : null,
-                g.getUsuario() != null ? g.getUsuario().getNombre() : null,
-                g.getReceta() != null ? g.getReceta().getIdReceta() : null,
-                g.getReceta() != null ? g.getReceta().getTitulo() : null,
-                g.getFechaGuardado()
-        );
-    }
+    GuardadoReceta toEntity(GuardadoRecetaDTO guardadoRecetaDTO);
 
-    public GuardadoReceta toEntity(GuardadoRecetaDTO dto) {
-        GuardadoReceta g = new GuardadoReceta();
-        g.setIdGuardado(dto.getIdGuardado());
-        g.setFechaGuardado(dto.getFechaGuardado());
+    @Mapping(source = "usuario.idUsuario", target = "idUsuario")
+    @Mapping(source = "receta.idReceta", target = "idReceta")
+    GuardadoRecetaDTO toDTO(GuardadoReceta guardadoReceta);
 
-        if (dto.getIdUsuario() != null) {
-            Usuario u = new Usuario();
-            u.setIdUsuario(dto.getIdUsuario());
-            g.setUsuario(u);
-        }
+    GuardadoRecetaResponseDTO toResponseDTO(GuardadoReceta guardado);
 
-        if (dto.getIdReceta() != null) {
-            Receta r = new Receta();
-            r.setIdReceta(dto.getIdReceta());
-            g.setReceta(r);
-        }
-
-        return g;
-    }
 }

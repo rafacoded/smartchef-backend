@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ColeccionRecetaRepository extends JpaRepository<ColeccionReceta, Long> {
+public interface IColeccionRecetaRepository extends JpaRepository<ColeccionReceta, Long> {
     List<ColeccionReceta> findByUsuarioIdUsuario(Long idUsuario);
 }

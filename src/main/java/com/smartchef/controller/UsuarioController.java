@@ -1,55 +1,47 @@
 package com.smartchef.controller;
 
 import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.mapper.UsuarioMapper;
 import com.smartchef.model.Usuario;
 import com.smartchef.service.UsuarioService;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*") // permite peticiones del frontend (Angular/Ionic)
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private final UsuarioMapper usuarioMapper;
 
-    // ✅ Inyección por constructor
-    @Autowired
-    public UsuarioController(UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
-        this.usuarioService = usuarioService;
-        this.usuarioMapper = usuarioMapper;
-    }
-
-    // 🧾 Listar todos los usuarios
-    @GetMapping
-    public List<UsuarioDTO> listarUsuarios() {
-        return usuarioService.listarUsuarios()
-                .stream()
-                .map(usuarioMapper::toDTO)
-                .toList();
-    }
-
-    // ➕ Crear un usuario (usando DTO)
+    // SE USA USUARIODTO para entrada y RESPONSEDTO para SALIDA (sin password)
     @PostMapping
-    public UsuarioDTO crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
-        Usuario guardado = usuarioService.crearUsuario(usuario);
-        return usuarioMapper.toDTO(guardado);
+    public UsuarioResponseDTO crearUsuario(@Valid @RequestBody UsuarioDTO dto) {
+        return usuarioService.crearUsuario(dto);
     }
 
-    // 🔍 Buscar usuario por email
+    @GetMapping
+    public List<UsuarioResponseDTO> listarUsuarios() {
+        return usuarioService.listarUsuarios();
+    }
+
     @GetMapping("/{email}")
-    public Optional<UsuarioDTO> obtenerUsuarioPorEmail(@PathVariable String email) {
-        return usuarioService.buscarPorEmail(email)
-                .map(usuarioMapper::toDTO);
+    public UsuarioResponseDTO obtenerUsuarioPorEmail(@PathVariable String email) {
+        return usuarioService.buscarPorEmail(email);
     }
 
-    // ❌ Eliminar usuario por ID
+    @PutMapping("/{id}")
+    public UsuarioResponseDTO actualizarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioDTO dto) {
+        return usuarioService.actualizarUsuario(id, dto);
+    }
+
     @DeleteMapping("/{id}")
     public void eliminarUsuario(@PathVariable Long id) {
         usuarioService.eliminarUsuario(id);

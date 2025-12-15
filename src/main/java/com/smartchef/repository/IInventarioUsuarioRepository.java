@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface InventarioUsuarioRepository extends JpaRepository<InventarioUsuario, Long> {
+public interface IInventarioUsuarioRepository extends JpaRepository<InventarioUsuario, Long> {
     List<InventarioUsuario> findByUsuarioIdUsuario(Long idUsuario);
 }

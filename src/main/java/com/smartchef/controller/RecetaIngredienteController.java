@@ -1,50 +1,46 @@
 package com.smartchef.controller;
 
+import com.smartchef.dto.IngredienteUsoDTO;
 import com.smartchef.dto.RecetaIngredienteDTO;
-import com.smartchef.mapper.RecetaIngredienteMapper;
-import com.smartchef.model.RecetaIngrediente;
+import com.smartchef.dto.UsuarioRecetaPopularDTO;
 import com.smartchef.service.RecetaIngredienteService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/receta-ingredientes")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class RecetaIngredienteController {
 
     private final RecetaIngredienteService recetaIngredienteService;
-    private final RecetaIngredienteMapper recetaIngredienteMapper;
 
-    @Autowired
-    public RecetaIngredienteController(RecetaIngredienteService recetaIngredienteService,
-                                       RecetaIngredienteMapper recetaIngredienteMapper) {
-        this.recetaIngredienteService = recetaIngredienteService;
-        this.recetaIngredienteMapper = recetaIngredienteMapper;
+    @PostMapping
+    public RecetaIngredienteDTO crearRecetaIngrediente(@Valid @RequestBody RecetaIngredienteDTO dto) {
+        return recetaIngredienteService.crearRecetaIngrediente(dto);
     }
 
-    // 📋 Listar ingredientes de una receta
     @GetMapping("/receta/{idReceta}")
     public List<RecetaIngredienteDTO> listarPorReceta(@PathVariable Long idReceta) {
-        return recetaIngredienteService.listarPorReceta(idReceta)
-                .stream()
-                .map(recetaIngredienteMapper::toDTO)
-                .collect(Collectors.toList());
+        return recetaIngredienteService.listarPorReceta(idReceta);
     }
 
-    // ➕ Añadir ingrediente a una receta
-    @PostMapping
-    public RecetaIngredienteDTO guardar(@RequestBody RecetaIngredienteDTO dto) {
-        RecetaIngrediente ri = recetaIngredienteMapper.toEntity(dto);
-        RecetaIngrediente guardado = recetaIngredienteService.guardar(ri);
-        return recetaIngredienteMapper.toDTO(guardado);
-    }
-
-    // ❌ Eliminar ingrediente de una receta
     @DeleteMapping("/{idRecetaIngrediente}")
     public void eliminar(@PathVariable Long idRecetaIngrediente) {
         recetaIngredienteService.eliminar(idRecetaIngrediente);
+    }
+
+    // REQUEST 9
+    @GetMapping("/top5")
+    public List<IngredienteUsoDTO> topIngredientes() {
+        return recetaIngredienteService.top5Ingredientes();
+    }
+
+    // REQUEST 10
+    @GetMapping("/usuario-popular")
+    public List<UsuarioRecetaPopularDTO> usuarioPopular() {
+        return recetaIngredienteService.usuariosConRecetaMasPopular();
     }
 }

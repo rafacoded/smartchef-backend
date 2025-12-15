@@ -18,6 +18,9 @@ public class GuardadoReceta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idGuardado;
 
+    @Column(name = "fecha_guardado")
+    private LocalDateTime fechaGuardado;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
@@ -26,6 +29,13 @@ public class GuardadoReceta {
     @JoinColumn(name = "id_receta", nullable = false)
     private Receta receta;
 
-    @Column(name = "fecha_guardado")
-    private LocalDateTime fechaGuardado = LocalDateTime.now();
+    // 🔗 Colección (opcional)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_coleccion", nullable = true)
+    private ColeccionReceta coleccion;
+
+    @PrePersist
+    public void prePersist() {
+        this.fechaGuardado = LocalDateTime.now();
+    }
 }
