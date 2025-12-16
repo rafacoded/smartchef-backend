@@ -38,6 +38,7 @@ public class HistorialCocinaController {
         return historialCocinaService.obtenerHistorialSemanal(idUsuario, fecha);
     }
 
+
     @GetMapping("/usuario/{idUsuario}")
     public List<HistorialCocinaResponseDTO> listarPorUsuario(@PathVariable Long idUsuario) {
         return historialCocinaService.listarPorUsuario(idUsuario)
