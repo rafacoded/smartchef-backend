@@ -22,6 +22,13 @@ public class IngredienteGlobalService {
         return ingredienteRepository.findAll();
     }
 
+    public List<IngredienteGlobal> buscarPorNombreFiltro(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return listarTodos();
+        }
+        return ingredienteRepository.findByNombreContainingIgnoreCase(texto);
+    }
+
     public IngredienteGlobal buscarEntityPorId(Long id) {
         return ingredienteRepository.findById(id)
                 .orElseThrow(() -> new ElementoNoEncontradoException(

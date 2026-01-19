@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/recetas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recetas").permitAll()
                         .requestMatchers("/api/estadisticas/**").permitAll()
+                        .requestMatchers("/api/ingredientes/**").permitAll()
                         .requestMatchers("/error").permitAll()
 
                         // RESTO REQUIERE JWT

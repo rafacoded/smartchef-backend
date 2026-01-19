@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "receta")
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "receta")
 public class Receta {
 
     @Id
@@ -41,6 +42,7 @@ public class Receta {
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<PasoReceta> pasos = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -49,6 +51,7 @@ public class Receta {
     private List<PreferenciaAlimentaria> preferencias = new ArrayList<>();
 
     @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<RecetaIngrediente> ingredientes = new ArrayList<>();
 
 

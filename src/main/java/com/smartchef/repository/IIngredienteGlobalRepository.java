@@ -10,4 +10,7 @@ import java.util.List;
 public interface IIngredienteGlobalRepository extends JpaRepository<IngredienteGlobal, Long> {
     List<IngredienteGlobal> findByCategoria(String categoria);
     IngredienteGlobal findByNombre(String nombre);
+
+    List<IngredienteGlobal> findByNombreContainingIgnoreCase(String nombre);
+
 }

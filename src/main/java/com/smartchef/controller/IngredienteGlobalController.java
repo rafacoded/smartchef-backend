@@ -29,12 +29,15 @@ public class IngredienteGlobalController {
     }
 
     @GetMapping
-    public List<IngredienteGlobalDTO> listarIngredientes() {
-        return ingredienteService.listarTodos()
+    public List<IngredienteGlobalDTO> listarIngredientes(
+            @RequestParam(required = false) String q
+    ) {
+        return ingredienteService.buscarPorNombreFiltro(q)
                 .stream()
                 .map(ingredienteMapper::toDTO)
                 .toList();
     }
+
 
     @GetMapping("/categoria/{categoria}")
     public List<IngredienteGlobalDTO> buscarPorCategoria(@PathVariable String categoria) {

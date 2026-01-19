@@ -34,12 +34,13 @@ public class RecetaService {
                 .build();
 
         aplicarPasos(receta, dto.getPasos());
+
+        receta = recetaRepository.save(receta);
+
         aplicarIngredientes(receta, dto.getIngredientes());
 
         return recetaMapper.toResponseDTO(recetaRepository.save(receta));
     }
-
-
 
 //    public RecetaResponseDTO crearReceta(RecetaDTO dto) {
 //        Receta receta = recetaMapper.toEntity(dto);
@@ -93,23 +94,24 @@ public class RecetaService {
                 .toList();
     }
 
-    public RecetaResponseDTO actualizarReceta(Long id, RecetaDTO dto) {
-        Receta existente = recetaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Receta no encontrada con ID: " + dto.getIdReceta()));
+    @Transactional
+    public void actualizarReceta(Long id, RecetaActualizarDTO dto) {
 
-        existente.setTitulo(dto.getTitulo());
-        existente.setDescripcion(dto.getDescripcion());
-        existente.getPasos().clear();
-        aplicarPasos(existente, dto.getPasos());
-        existente.setTiempoPreparacion(dto.getTiempoPreparacion());
-        existente.setDificultad(Dificultad.valueOf(dto.getDificultad()));
-        existente.setCategoria(dto.getCategoria());
-        existente.setImagen(dto.getImagen());
+        Receta receta = recetaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Receta no encontrada"));
 
-        Receta  actualizado = recetaRepository.save(existente);
+        receta.setTitulo(dto.getTitulo());
+        receta.setDescripcion(dto.getDescripcion());
+        receta.setTiempoPreparacion(dto.getTiempoPreparacion());
+        receta.setDificultad(dto.getDificultad());
+        receta.setImagen(dto.getImagen());
 
-        return recetaMapper.toResponseDTO(actualizado);
+        aplicarPasos(receta, dto.getPasos());
+        aplicarIngredientes(receta, dto.getIngredientes());
+
+        recetaRepository.save(receta);
     }
+
 
     public void eliminar(Long id) {
         if (!recetaRepository.existsById(id)) {
@@ -141,16 +143,10 @@ public class RecetaService {
         }
     }
 
-    private void aplicarIngredientes(
+    public void aplicarIngredientes(
             Receta receta,
             List<RecetaIngredienteDTO> ingredientesDto
     ) {
-
-        if (receta.getIngredientes() == null) {
-            receta.setIngredientes(new ArrayList<>());
-        }
-
-        receta.getIngredientes().clear();
 
         if (ingredientesDto == null) return;
 

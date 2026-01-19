@@ -1,5 +1,6 @@
 package com.smartchef.controller;
 
+import com.smartchef.dto.RecetaActualizarDTO;
 import com.smartchef.dto.RecetaCrearDTO;
 import com.smartchef.dto.RecetaDTO;
 import com.smartchef.dto.RecetaResponseDTO;
@@ -7,6 +8,7 @@ import com.smartchef.model.PreferenciaAlimentaria;
 import com.smartchef.service.RecetaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,7 +51,17 @@ public class RecetaController {
         return recetaService.buscarPorCategoria(categoria);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Void> actualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody RecetaActualizarDTO dto
+    ) {
+        recetaService.actualizarReceta(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @DeleteMapping("/eliminar/{id}")
     public void eliminarReceta(@PathVariable Long id) {
         recetaService.eliminar(id);
     }

@@ -5,14 +5,17 @@ import lombok.*;
 
 @Entity
 @Table(name = "receta_ingrediente")
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RecetaIngrediente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Include
     private Long idRecetaIngrediente;
 
     @Column(nullable = false)
