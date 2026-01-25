@@ -3,6 +3,8 @@ package com.smartchef.service;
 import com.smartchef.dto.IngredienteUsoDTO;
 import com.smartchef.dto.RecetaIngredienteDTO;
 import com.smartchef.dto.UsuarioRecetaPopularDTO;
+import com.smartchef.exception.SmartChefException;
+import com.smartchef.exception.ValorNoValidoException;
 import com.smartchef.mapper.RecetaIngredienteMapper;
 import com.smartchef.model.RecetaIngrediente;
 import com.smartchef.repository.IRecetaIngredienteRepository;
@@ -51,14 +53,27 @@ public class RecetaIngredienteService {
 
     // ESTADÍSTICAS
     public List<IngredienteUsoDTO> top5Ingredientes() {
-        return recetaIngredienteRepository
-                .topIngredientes(PageRequest.of(0,5))
-                .stream()
-                .map(row -> new IngredienteUsoDTO(
-                        (Long) row[0],
-                        (String) row[1],
-                        (Long) row[2]
-                ))
+        List<Object[]> rows = recetaIngredienteRepository.topIngredientes(PageRequest.of(0,5));
+
+        if (rows == null || rows.isEmpty()) {
+            return List.of();
+        }
+
+        return rows.stream()
+                .map(row -> {
+                    if (row == null || row.length < 3) {
+                        throw new ValorNoValidoException("Resultado inválido en topIngredientes");
+                    }
+                    try {
+                        return new IngredienteUsoDTO(
+                                (Long) row[0],
+                                (String) row[1],
+                                (Long) row[2]
+                        );
+                    } catch (ClassCastException e) {
+                        throw new ValorNoValidoException("Tipos inválidos en topIngredientes");
+                    }
+                })
                 .toList();
     }
 
@@ -72,6 +87,7 @@ public class RecetaIngredienteService {
         Long vecesGuardada = (Long) top.get()[1];
 
         List<Object[]> usuarios = guardadoRecetaService.usuariosQueGuardaronReceta(idReceta);
+        if (usuarios == null || usuarios.isEmpty()) return List.of();
 
         return usuarios.stream()
                 .map(row -> new UsuarioRecetaPopularDTO(

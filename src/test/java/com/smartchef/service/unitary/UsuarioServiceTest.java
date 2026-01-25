@@ -1,14 +1,13 @@
-package com.smartchef.service;
+package com.smartchef.service.unitary;
 
 
-import com.smartchef.dto.RecetaResponseDTO;
 import com.smartchef.dto.UsuarioDTO;
 import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.model.PreferenciaAlimentaria;
 import com.smartchef.model.Usuario;
-import com.smartchef.repository.IRecetaRepository;
 import com.smartchef.repository.IUsuarioRepository;
 
+import com.smartchef.service.UsuarioService;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -28,17 +27,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UsuarioServiceTest {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    @Autowired private UsuarioService usuarioService;
 
-    @Autowired
-    private IUsuarioRepository repository;
-
-    // REGISTRAR UN USUARIO CON PREFERENCIAS ALIMENTARIAS
+    @Autowired private IUsuarioRepository repository;
 
     @Test
-    @DisplayName("Crear usuario -> Caso positivo")
-    void crearUsuario_ok() {
+    @DisplayName("1 Crear usuario -> Caso positivo")
+    void crearUsuarioPositivoTest() {
         // Given
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("nuevo_user");
@@ -58,13 +53,13 @@ public class UsuarioServiceTest {
 
         assertNotEquals("1234", guardado.getPassword(), "La contraseña no se ha codificado");
 
-        assertEquals(PreferenciaAlimentaria.VEGETARIANO, guardado.getPreferenciasAlimentarias(),
+        assertEquals(PreferenciaAlimentaria.VEGETARIANO, guardado.getPreferenciasAlimentarias().getFirst(),
                 "La preferencia alimentaria no coincide");
     }
 
     @Test
-    @DisplayName("Crear usuario -> Caso negativo (password nula)")
-    void crearUsuario_negativo_passwordNull() {
+    @DisplayName("1 Crear usuario -> Caso negativo (password nula)")
+    void crearUsuarioNegativoTest() {
         // Given
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("user_fail");

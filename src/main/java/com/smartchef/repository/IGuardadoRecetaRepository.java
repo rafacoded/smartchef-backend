@@ -1,6 +1,8 @@
 package com.smartchef.repository;
 
 import com.smartchef.model.GuardadoReceta;
+import com.smartchef.model.Receta;
+import com.smartchef.model.Usuario;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

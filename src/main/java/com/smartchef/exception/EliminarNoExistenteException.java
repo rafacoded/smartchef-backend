@@ -1,6 +1,6 @@
 package com.smartchef.exception;
 
-public class EliminarNoExistenteException extends RuntimeException {
+public class EliminarNoExistenteException extends SmartChefException {
 
     public EliminarNoExistenteException(String mensaje){
         super(mensaje);

@@ -150,6 +150,8 @@ public class RecetaService {
 
         if (ingredientesDto == null) return;
 
+        if (receta.getIngredientes() == null) receta.setIngredientes(new ArrayList<>());
+
         for (RecetaIngredienteDTO dto : ingredientesDto) {
 
             IngredienteGlobal ingrediente =

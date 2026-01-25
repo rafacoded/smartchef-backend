@@ -3,6 +3,7 @@ package com.smartchef.service;
 import com.smartchef.dto.HistorialCocinaDTO;
 import com.smartchef.dto.HistorialCocinaResponseDTO;
 import com.smartchef.exception.OperacionNoPermitidaException;
+import com.smartchef.exception.ValorNoValidoException;
 import com.smartchef.mapper.HistorialCocinaMapper;
 import com.smartchef.model.HistorialCocina;
 import com.smartchef.model.Receta;
@@ -53,17 +54,21 @@ public class HistorialCocinaService {
             Long idUsuario,
             LocalDate fecha
     ) {
+        if (idUsuario == null || idUsuario <= 0) {
+            throw new ValorNoValidoException("idUsuario inválido");
+        }
+
         usuarioService.buscarPorId(idUsuario);
 
         LocalDate base = (fecha != null) ? fecha : LocalDate.now();
-
         LocalDate inicioSemana = base.with(DayOfWeek.MONDAY);
         LocalDate finSemana = inicioSemana.plusDays(6);
 
-        return repo.findHistorialSemanal(idUsuario, inicioSemana, finSemana)
-                .stream()
-                .map(mapper::toResponseDTO)
-                .toList();
+        List<HistorialCocina> rows = repo.findHistorialSemanal(idUsuario, inicioSemana, finSemana);
+
+        if (rows == null || rows.isEmpty()) return List.of();
+
+        return rows.stream().map(mapper::toResponseDTO).toList();
     }
 
 

@@ -29,9 +29,6 @@ public interface IRecetaRepository extends JpaRepository<Receta, Long> {
             @Param("prefList") List<PreferenciaAlimentaria> prefList
     );
 
-
-
-
     // JPQL
     @Query("select r from Receta r where r.dificultad = :dificultad and r.tiempoPreparacion > :tiempoPreparacion")
     List<Receta> buscarPorDificultadAndTiempoPreparacion(String dificultad, Integer tiempoPreparacion);

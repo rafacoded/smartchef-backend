@@ -14,7 +14,7 @@ public interface IRecetaIngredienteRepository extends JpaRepository<RecetaIngred
     List<RecetaIngrediente> findByRecetaIdReceta(Long idReceta);
 
     @Query("""
-        SELECT 
+        SELECT
             i.idIngrediente,
             i.nombre,
             COUNT(DISTINCT r.idReceta)

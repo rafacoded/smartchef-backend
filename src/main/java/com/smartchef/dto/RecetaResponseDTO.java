@@ -2,6 +2,7 @@ package com.smartchef.dto;
 
 import com.smartchef.model.Dificultad;
 import com.smartchef.model.PreferenciaAlimentaria;
+import com.smartchef.model.RecetaIngrediente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class RecetaResponseDTO {
 
     private List<PasoRecetaResponseDTO> pasos;
     private List<PreferenciaAlimentaria> preferencias;
+    private List<RecetaIngrediente> ingredientes;
 
 }
 

@@ -33,6 +33,11 @@ public class ListaCompraService {
             Long idReceta,
             ListaCompraDTO dto
     ) {
+
+        if (dto == null || dto.getNombreLista() == null || dto.getNombreLista().isBlank()) {
+            throw new IllegalArgumentException("El nombre de la lista es obligatorio");
+        }
+
         Usuario usuario = usuarioService.buscarPorId(idUsuario);
         Receta receta = recetaService.buscarEntityPorId(idReceta);
 
