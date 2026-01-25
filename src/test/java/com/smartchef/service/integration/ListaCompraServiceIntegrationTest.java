@@ -25,6 +25,8 @@ public class ListaCompraServiceIntegrationTest {
 
     @Mock private RecetaService recetaService;
 
+    @Mock private ListaItemService listaItemService;
+
     @Mock private RecetaIngredienteService recetaIngredienteService;
 
     @Mock private ListaCompraMapper listaCompraMapper;
@@ -33,63 +35,31 @@ public class ListaCompraServiceIntegrationTest {
     @DisplayName("6 Test Integración -> generarDesdeReceta()")
     void generarDesdeRecetaIntegrationTest() {
 
-        // Given
         Long idUsuario = 1L;
         Long idReceta = 10L;
 
         ListaCompraDTO dto = new ListaCompraDTO();
-        dto.setNombreLista("Lista semana");
-        dto.setDescripcion("Compra para la receta");
+        dto.setNombreLista("Lista");
+        dto.setDescripcion("desc");
 
-        Usuario u = new Usuario();
-        u.setIdUsuario(idUsuario);
+        Mockito.when(usuarioService.buscarPorId(Mockito.anyLong())).thenReturn(new Usuario());
+        Mockito.when(recetaService.buscarEntityPorId(Mockito.anyLong())).thenReturn(new Receta());
+        Mockito.when(recetaIngredienteService.buscarPorReceta(Mockito.anyLong()))
+                .thenReturn(List.of(new RecetaIngrediente(), new RecetaIngrediente()));
 
-        Receta r = new Receta();
-        r.setIdReceta(idReceta);
+        Mockito.when(listaCompraRepository.save(Mockito.any(ListaCompra.class)))
+                .thenReturn(new ListaCompra());
 
-        IngredienteGlobal ing1 = new IngredienteGlobal();
-        ing1.setIdIngrediente(100L);
-        ing1.setNombre("Leche");
-
-        IngredienteGlobal ing2 = new IngredienteGlobal();
-        ing2.setIdIngrediente(200L);
-        ing2.setNombre("Harina");
-
-        RecetaIngrediente ri1 = RecetaIngrediente.builder()
-                .ingrediente(ing1).cantidad(200.0).unidad(UnidadMedida.MILILITRO)
-                .build();
-
-        RecetaIngrediente ri2 = RecetaIngrediente.builder()
-                .ingrediente(ing2).cantidad(100.0).unidad(UnidadMedida.GRAMO)
-                .build();
-
-        Mockito.when(usuarioService.buscarPorId(idUsuario)).thenReturn(u);
-        Mockito.when(recetaService.buscarEntityPorId(idReceta)).thenReturn(r);
-        Mockito.when(recetaIngredienteService.buscarPorReceta(idReceta)).thenReturn(List.of(ri1, ri2));
-
-        ListaCompra listaGuardada = ListaCompra.builder()
-                .idLista(999L)
-                .nombreLista(dto.getNombreLista())
-                .descripcion(dto.getDescripcion())
-                .usuario(u)
-                .origenReceta(r)
-                .activa(true)
-                .build();
-
-        Mockito.when(listaCompraRepository.save(Mockito.any(ListaCompra.class))).thenReturn(listaGuardada);
-
-        ListaCompraResponseDTO responseMock = new ListaCompraResponseDTO();
         Mockito.when(listaCompraMapper.toResponseDTO(Mockito.any(ListaCompra.class), Mockito.anyList()))
-                .thenReturn(responseMock);
+                .thenReturn(new ListaCompraResponseDTO());
 
-        // Then
         service.generarDesdeReceta(idUsuario, idReceta, dto);
 
-        // When
         Mockito.verify(usuarioService).buscarPorId(idUsuario);
         Mockito.verify(recetaService).buscarEntityPorId(idReceta);
         Mockito.verify(listaCompraRepository).save(Mockito.any(ListaCompra.class));
         Mockito.verify(recetaIngredienteService).buscarPorReceta(idReceta);
-
+        Mockito.verify(listaItemService).guardarItems(Mockito.anyList());
+        Mockito.verify(listaCompraMapper).toResponseDTO(Mockito.any(ListaCompra.class), Mockito.anyList());
     }
 }
