@@ -28,18 +28,20 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        // ENDPOINTS PÚBLICOS
+                        // ✅ RUTAS "BÁSICAS" PÚBLICAS
+                        .requestMatchers("/", "/error", "/favicon.ico").permitAll()
+
+                        // ✅ ENDPOINTS PÚBLICOS API
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/**").permitAll()
+
                         .requestMatchers("/api/recetas/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/recetas/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/recetas").permitAll()
+
                         .requestMatchers("/api/estadisticas/**").permitAll()
                         .requestMatchers("/api/ingredientes/**").permitAll()
-                        .requestMatchers("/error").permitAll()
 
-                        // RESTO REQUIERE JWT
+                        // 🔒 RESTO REQUIERE JWT
                         .anyRequest().authenticated()
                 )
 
@@ -50,11 +52,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
-
-
