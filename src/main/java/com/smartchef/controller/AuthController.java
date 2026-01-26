@@ -32,12 +32,6 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Testear deployment
-    @GetMapping("/")
-    public String home() {
-        return "SmartChef backend is running ✅";
-    }
-
     @PostMapping("/register")
     public UsuarioResponseDTO register(@Valid @RequestBody UsuarioDTO dto) {
         return usuarioService.crearUsuario(dto);
