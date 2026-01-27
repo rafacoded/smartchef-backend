@@ -41,6 +41,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/estadisticas/**").permitAll()
                         .requestMatchers("/api/ingredientes/**").permitAll()
+                        .requestMatchers("/", "/health").permitAll()
 
                         // 🔒 RESTO REQUIERE JWT
                         .anyRequest().authenticated()
