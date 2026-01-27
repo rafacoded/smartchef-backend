@@ -45,7 +45,7 @@ public class Receta {
     @Builder.Default
     private List<PasoReceta> pasos = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     @Column(name = "preferencia")
     private List<PreferenciaAlimentaria> preferencias = new ArrayList<>();

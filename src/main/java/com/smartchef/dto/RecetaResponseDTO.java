@@ -23,7 +23,7 @@ public class RecetaResponseDTO {
 
     private List<PasoRecetaResponseDTO> pasos;
     private List<PreferenciaAlimentaria> preferencias;
-    private List<RecetaIngrediente> ingredientes;
+    private List<RecetaIngredienteDTO> ingredientes;
 
 }
 
