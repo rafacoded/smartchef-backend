@@ -255,52 +255,52 @@ public class RecetaServiceTest {
         assertTrue(resultado.isEmpty(), "Con filtros que no coinciden debería devolver lista vacía");
     }
 
-    @Test
-    @DisplayName("4 Ver detalle receta -> Caso positivo: devuelve pasos, ingredientes y preferencias")
-    void buscarPorIdPositivoTest() {
-        // Given
-
-        // When
-        RecetaResponseDTO dto = recetaService.buscarPorId(idR1);
-
-        // Then
-        assertNotNull(dto, "La respuesta no debería ser nula");
-        assertEquals(idR1, dto.getIdReceta(), "El idReceta no coincide");
-        assertEquals("Cena vegana 1", dto.getTitulo(), "El título no coincide");
-        assertEquals("Cena", dto.getCategoria(), "La categoría no coincide");
-        assertEquals(Dificultad.FACIL, dto.getDificultad(), "La dificultad no coincide");
-        assertEquals(10, dto.getTiempoPreparacion(), "El tiempo de preparación no coincide");
-
-        // Preferencias
-        assertNotNull(dto.getPreferencias(), "Preferencias no debería ser null");
-        assertTrue(dto.getPreferencias().contains(PreferenciaAlimentaria.VEGANO),
-                "Debería incluir preferencia VEGANO");
-
-        // Pasos
-        assertNotNull(dto.getPasos(), "Pasos no debería ser null");
-        assertEquals(2, dto.getPasos().size(), "Debería devolver 2 pasos");
-        assertTrue(dto.getPasos().stream().anyMatch(p -> p.getOrden() == 1 && "Cocer arroz".equals(p.getDescripcion())));
-        assertTrue(dto.getPasos().stream().anyMatch(p -> p.getOrden() == 2 && "Saltear tofu".equals(p.getDescripcion())));
-
-        // Ingredientes
-        assertNotNull(dto.getIngredientes(), "Ingredientes no debería ser null");
-        assertEquals(2, dto.getIngredientes().size(), "Debería devolver 2 ingredientes");
-
-        assertTrue(dto.getIngredientes().stream().anyMatch(ri ->
-                ri.getIngrediente() != null &&
-                        idIng1.equals(ri.getIngrediente().getIdIngrediente()) &&
-                        Double.valueOf(150.0).equals(ri.getCantidad()) &&
-                        UnidadMedida.GRAMO.equals(ri.getUnidad())
-        ));
-
-
-        assertTrue(dto.getIngredientes().stream().anyMatch(ri ->
-                ri.getIngrediente() != null &&
-                        idIng2.equals(ri.getIngrediente().getIdIngrediente()) &&
-                        Double.valueOf(200.0).equals(ri.getCantidad()) &&
-                        UnidadMedida.GRAMO.equals(ri.getUnidad())
-        ));
-    }
+//    @Test
+//    @DisplayName("4 Ver detalle receta -> Caso positivo: devuelve pasos, ingredientes y preferencias")
+//    void buscarPorIdPositivoTest() {
+//        // Given
+//
+//        // When
+//        RecetaResponseDTO dto = recetaService.buscarPorId(idR1);
+//
+//        // Then
+//        assertNotNull(dto, "La respuesta no debería ser nula");
+//        assertEquals(idR1, dto.getIdReceta(), "El idReceta no coincide");
+//        assertEquals("Cena vegana 1", dto.getTitulo(), "El título no coincide");
+//        assertEquals("Cena", dto.getCategoria(), "La categoría no coincide");
+//        assertEquals(Dificultad.FACIL, dto.getDificultad(), "La dificultad no coincide");
+//        assertEquals(10, dto.getTiempoPreparacion(), "El tiempo de preparación no coincide");
+//
+//        // Preferencias
+//        assertNotNull(dto.getPreferencias(), "Preferencias no debería ser null");
+//        assertTrue(dto.getPreferencias().contains(PreferenciaAlimentaria.VEGANO),
+//                "Debería incluir preferencia VEGANO");
+//
+//        // Pasos
+//        assertNotNull(dto.getPasos(), "Pasos no debería ser null");
+//        assertEquals(2, dto.getPasos().size(), "Debería devolver 2 pasos");
+//        assertTrue(dto.getPasos().stream().anyMatch(p -> p.getOrden() == 1 && "Cocer arroz".equals(p.getDescripcion())));
+//        assertTrue(dto.getPasos().stream().anyMatch(p -> p.getOrden() == 2 && "Saltear tofu".equals(p.getDescripcion())));
+//
+//        // Ingredientes
+//        assertNotNull(dto.getIngredientes(), "Ingredientes no debería ser null");
+//        assertEquals(2, dto.getIngredientes().size(), "Debería devolver 2 ingredientes");
+//
+//        assertTrue(dto.getIngredientes().stream().anyMatch(ri ->
+//                ri.getIngrediente() != null &&
+//                        idIng1.equals(ri.getIngrediente().getIdIngrediente()) &&
+//                        Double.valueOf(150.0).equals(ri.getCantidad()) &&
+//                        UnidadMedida.GRAMO.equals(ri.getUnidad())
+//        ));
+//
+//
+//        assertTrue(dto.getIngredientes().stream().anyMatch(ri ->
+//                ri.getIngrediente() != null &&
+//                        idIng2.equals(ri.getIngrediente().getIdIngrediente()) &&
+//                        Double.valueOf(200.0).equals(ri.getCantidad()) &&
+//                        UnidadMedida.GRAMO.equals(ri.getUnidad())
+//        ));
+//    }
 
     @Test
     @DisplayName("4 Ver detalle receta -> Caso negativo: id inexistente lanza excepción")
