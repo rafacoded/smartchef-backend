@@ -15,5 +15,6 @@ public class UsuarioResponseDTO {
     private String nombre;
     private String email;
     private String fechaRegistro;
+    private String fotoPerfil;
     private List<PreferenciaAlimentaria> preferenciasAlimentarias;
 }

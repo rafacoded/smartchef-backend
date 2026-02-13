@@ -1,6 +1,7 @@
 package com.smartchef.controller;
 
-import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.AuthResponseDTO;
+import com.smartchef.dto.UsuarioRegistroDTO;
 import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.mapper.UsuarioMapper;
 import com.smartchef.model.Usuario;
@@ -33,12 +34,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UsuarioResponseDTO register(@Valid @RequestBody UsuarioDTO dto) {
+    public UsuarioResponseDTO register(@Valid @RequestBody UsuarioRegistroDTO dto) {
         return usuarioService.crearUsuario(dto);
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@Valid @RequestBody Map<String, String> request) {
+    public AuthResponseDTO login(@Valid @RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
 
@@ -56,6 +57,7 @@ public class AuthController {
                         .build()
         );
 
-        return Map.of("token", token);
+        return new AuthResponseDTO(token, usuario.getIdUsuario(), usuario.getEmail());
     }
+
 }

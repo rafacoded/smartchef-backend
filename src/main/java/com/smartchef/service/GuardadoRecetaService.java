@@ -55,8 +55,11 @@ public class GuardadoRecetaService {
         return repo.usuariosPorReceta(idReceta);
     }
 
-    public List<GuardadoReceta> listarPorUsuario(Long idUsuario) {
-        return repo.findByUsuarioIdUsuario(idUsuario);
+    public List<GuardadoRecetaResponseDTO> listarPorUsuario(Long idUsuario) {
+        return repo.findByUsuarioIdUsuario(idUsuario)
+                .stream()
+                .map(mapper::toResponseDTO)
+                .toList();
     }
 
     public void eliminar(Long id) {

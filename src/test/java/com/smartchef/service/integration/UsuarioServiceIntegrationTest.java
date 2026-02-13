@@ -1,6 +1,7 @@
 package com.smartchef.service.integration;
 
 import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.UsuarioRegistroDTO;
 import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.mapper.UsuarioMapper;
 import com.smartchef.model.PreferenciaAlimentaria;
@@ -36,7 +37,7 @@ public class UsuarioServiceIntegrationTest {
     void crearUsuarioIntegrationTest() {
 
         // Given
-        UsuarioDTO dto = new UsuarioDTO();
+        UsuarioRegistroDTO dto = new UsuarioRegistroDTO();
         dto.setNombre("nuevo_user");
         dto.setEmail("nuevo@email.com");
         dto.setPassword("1234");

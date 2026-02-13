@@ -1,6 +1,7 @@
 package com.smartchef.controller;
 
 import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.UsuarioRegistroDTO;
 import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.mapper.UsuarioMapper;
 import com.smartchef.model.Usuario;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +25,19 @@ public class UsuarioController {
 
     // SE USA USUARIODTO para entrada y RESPONSEDTO para SALIDA (sin password)
     @PostMapping
-    public UsuarioResponseDTO crearUsuario(@Valid @RequestBody UsuarioDTO dto) {
+    public UsuarioResponseDTO crearUsuario(@Valid @RequestBody UsuarioRegistroDTO dto) {
         return usuarioService.crearUsuario(dto);
     }
 
     @GetMapping
     public List<UsuarioResponseDTO> listarUsuarios() {
         return usuarioService.listarUsuarios();
+    }
+
+    @GetMapping("/perfil")
+    public UsuarioResponseDTO miPerfil(Authentication auth) {
+        String email = auth.getName();
+        return usuarioService.buscarPorEmail(email);
     }
 
     @GetMapping("/{email}")

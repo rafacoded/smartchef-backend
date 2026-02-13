@@ -1,6 +1,7 @@
 package com.smartchef.service;
 
 import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.UsuarioRegistroDTO;
 import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.exception.ElementoNoEncontradoException;
 import com.smartchef.mapper.UsuarioMapper;
@@ -21,7 +22,7 @@ public class UsuarioService {
     private final IUsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
-    public UsuarioResponseDTO crearUsuario(UsuarioDTO dto) {
+    public UsuarioResponseDTO crearUsuario(UsuarioRegistroDTO dto) {
         Usuario usuario = usuarioMapper.toEntity(dto);
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         Usuario guardado = usuarioRepository.save(usuario);

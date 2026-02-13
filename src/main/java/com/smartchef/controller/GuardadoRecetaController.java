@@ -4,11 +4,13 @@ import com.smartchef.dto.GuardadoRecetaDTO;
 import com.smartchef.dto.GuardadoRecetaResponseDTO;
 import com.smartchef.mapper.GuardadoRecetaMapper;
 import com.smartchef.model.GuardadoReceta;
+import com.smartchef.model.Usuario;
 import com.smartchef.service.GuardadoRecetaService;
 import com.smartchef.service.RecetaService;
 import com.smartchef.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public class GuardadoRecetaController {
     private final GuardadoRecetaService service;
     private final GuardadoRecetaMapper mapper;
 
+    private final UsuarioService usuarioService;
+
     @PostMapping("/usuarios/{idUsuario}/guardado/{idReceta}")
     public GuardadoRecetaResponseDTO guardarReceta(
             @PathVariable Long idUsuario,
@@ -31,14 +35,15 @@ public class GuardadoRecetaController {
         return service.guardarReceta(idUsuario, idReceta);
     }
 
+    @GetMapping("/mis-favoritos")
+    public List<GuardadoRecetaResponseDTO> listarPorUsuario(Authentication auth) {
 
+        String email = auth.getName();
 
-    @GetMapping("/usuarios/{idUsuario}/guardado")
-    public List<GuardadoRecetaDTO> listarPorUsuario(@PathVariable Long idUsuario) {
-        return service.listarPorUsuario(idUsuario)
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+        Usuario usuario = usuarioService.buscarEntityPorEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return service.listarPorUsuario(usuario.getIdUsuario());
     }
 
     @DeleteMapping("/usuarios/{idUsuario}/guardado/{idGuardado}")

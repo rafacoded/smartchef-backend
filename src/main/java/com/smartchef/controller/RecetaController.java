@@ -27,6 +27,7 @@ public class RecetaController {
         return recetaService.crearReceta(recetaDTO);
     }
 
+    // "/api/recetas" - Página principal
     @GetMapping
     public List<RecetaResponseDTO> listarRecetas(
             @RequestParam(required = false) String categoria,

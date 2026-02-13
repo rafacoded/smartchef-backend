@@ -2,6 +2,7 @@ package com.smartchef.service.unitary;
 
 
 import com.smartchef.dto.UsuarioDTO;
+import com.smartchef.dto.UsuarioRegistroDTO;
 import com.smartchef.dto.UsuarioResponseDTO;
 import com.smartchef.model.PreferenciaAlimentaria;
 import com.smartchef.model.Usuario;
@@ -35,7 +36,7 @@ public class UsuarioServiceTest {
     @DisplayName("1 Crear usuario -> Caso positivo")
     void crearUsuarioPositivoTest() {
         // Given
-        UsuarioDTO dto = new UsuarioDTO();
+        UsuarioRegistroDTO dto = new UsuarioRegistroDTO();
         dto.setNombre("nuevo_user");
         dto.setEmail("nuevo@email.com");
         dto.setPassword("1234");
@@ -61,7 +62,7 @@ public class UsuarioServiceTest {
     @DisplayName("1 Crear usuario -> Caso negativo (password nula)")
     void crearUsuarioNegativoTest() {
         // Given
-        UsuarioDTO dto = new UsuarioDTO();
+        UsuarioRegistroDTO dto = new UsuarioRegistroDTO();
         dto.setNombre("user_fail");
         dto.setEmail("fail@email.com");
         dto.setPassword(null);
