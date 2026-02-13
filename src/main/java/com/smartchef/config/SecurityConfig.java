@@ -32,20 +32,16 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8100"));
-
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-
-        // ✅ Headers típicos (incluye Authorization para JWT)
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-
-        // ✅ (opcional) si usas cookies/sesión: true. Con JWT normalmente false.
+        config.addAllowedOriginPattern("*");
+        config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization","Content-Type"));
         config.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -75,7 +71,6 @@ public class SecurityConfig {
 
                         // 🔒 Acciones de usuario (JWT)
                         .requestMatchers("/api/usuarios/**").authenticated()
-                        .requestMatchers("/api/guardado/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/recetas/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/recetas/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/recetas/**").authenticated()
